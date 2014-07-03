@@ -1,0 +1,11 @@
+rootProject.name = 'project-template'
+
+include 'app'
+include 'web'
+
+include 'core'
+
+include 'security'
+
+include 'rest-api'
+
