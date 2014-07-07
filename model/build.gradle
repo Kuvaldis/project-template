@@ -1,18 +1,28 @@
 ext {
+    global = v
     v = [
             postgres       : '9.1-901.jdbc4',
             bonecp         : '0.8.0.RELEASE',
             liquibase      : '3.2.0',
-            groovyLiquibase: '0.7.6'
+            groovyLiquibase: '0.7.6',
+            persistence    : '1.0.2',
+            batoo          : '2.0.1.2'
     ]
+    v.putAll global
 }
 
 dependencies {
     compile group: 'postgresql', name: 'postgresql', version: v.postgres
-    compile group: 'com.jolbox', name: 'bonecp', value: v.bonecp
+    compile group: 'com.jolbox', name: 'bonecp', version: v.bonecp
     compile(group: 'org.liquibase', name: 'liquibase-core', version: v.liquibase) {
         exclude group: 'org.eclipse.jetty'
         exclude group: 'junit'
     }
-    compile group: 'com.augusttechgroup', name: 'groovy-liquibase-dsl', value: v.groovyLiquibase
+    compile(group: 'com.augusttechgroup', name: 'groovy-liquibase-dsl', version: v.groovyLiquibase) {
+        exclude group: 'org.eclipse.jetty'
+    }
+    compile group: 'org.springframework', name: 'spring-tx', version: v.spring
+    compile group: 'org.springframework', name: 'spring-orm', version: v.spring
+    compile group: 'javax.persistence', name: 'persistence-api', version: v.persistence
+    compile group: 'org.batoo.jpa', name: 'batoo-jpa', version: v.batoo
 }
