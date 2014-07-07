@@ -11,7 +11,7 @@ class MultiConfigPropertiesFactoryBeanTest extends Specification {
     def "should load properties from properties holder"() {
         given:
             def ph = new PropertiesHolder(configObject:
-                    new ConfigSlurper().parse(this.class.classLoader.getResource('testProperties.groovy')))
+                    new ConfigSlurper().parse(this.class.classLoader.getResource('testConfig.groovy')))
             def m = new MultiConfigPropertiesFactoryBean(propertiesHolder: ph)
             def p = new Properties()
         when:

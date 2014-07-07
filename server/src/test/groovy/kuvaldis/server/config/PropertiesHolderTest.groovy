@@ -11,7 +11,7 @@ class PropertiesHolderTest extends Specification {
     def "should load properties from config object"() {
         given:
             def ph = new PropertiesHolder(configObject:
-                    new ConfigSlurper().parse(this.class.classLoader.getResource('testProperties.groovy')))
+                    new ConfigSlurper().parse(this.class.classLoader.getResource('testConfig.groovy')))
         when:
             def p = ph.toProperties()
         then:

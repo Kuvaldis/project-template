@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component
 @Slf4j
 @Component('propertiesBuilder')
 class PropertiesBuilder {
-    PropertiesHolder build(String mainConfig, String profilesConfig, String devConfig) {
-        final mainConfigFile = new File(mainConfig)
-        if (!mainConfigFile.exists()) {
+    PropertiesHolder build(final String mainConfig, final String profilesConfig = null, final String devConfig = null) {
+        final mainConfigFile
+        if (!mainConfig || !(mainConfigFile = new File(mainConfig)).exists()) {
             throw new IllegalArgumentException("Main config file doesn't exist: '$mainConfig'")
         }
         def config = new ConfigSlurper().parse(mainConfigFile.toURI().toURL())
-        final devConfigFile = new File(devConfig)
-        if (devConfigFile.exists()) {
+        final devConfigFile
+        if (devConfig && (devConfigFile = new File(devConfig)).exists()) {
             log.info("Run with developer profile '$devConfig'")
             config.merge(new ConfigSlurper().parse(devConfigFile.toURI().toURL()))
         } else {
@@ -27,8 +27,8 @@ class PropertiesBuilder {
                 log.info('Run with default profile')
             } else {
                 log.info("Run with profile '$env'")
-                final profilesConfigFile = new File(profilesConfig)
-                if (!profilesConfigFile.exists()) {
+                final profilesConfigFile
+                if (!profilesConfig || !(profilesConfigFile = new File(profilesConfig)).exists()) {
                     throw new IllegalArgumentException("Can't run application with profile '$env'. " +
                             "Profiles config doesn't exist: '$profilesConfig'")
                 }
