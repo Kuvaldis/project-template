@@ -1,0 +1,9 @@
+ext {
+    v = [
+            commonsDaemon: '1.0.15'
+    ]
+}
+
+dependencies {
+    compile group: 'commons-daemon', name: 'commons-daemon', version: v.commonsDaemon
+}
