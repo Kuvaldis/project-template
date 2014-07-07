@@ -1,8 +1,8 @@
 ext {
     v = [
-            postgres: '9.1-901.jdbc4',
-            bonecp: '0.8.0.RELEASE',
-            liquibase: '3.2.0',
+            postgres       : '9.1-901.jdbc4',
+            bonecp         : '0.8.0.RELEASE',
+            liquibase      : '3.2.0',
             groovyLiquibase: '0.7.6'
     ]
 }
@@ -10,6 +10,9 @@ ext {
 dependencies {
     compile group: 'postgresql', name: 'postgresql', version: v.postgres
     compile group: 'com.jolbox', name: 'bonecp', value: v.bonecp
-    compile group: 'org.liquibase', name: 'liquibase-core', version: v.liquibase
+    compile(group: 'org.liquibase', name: 'liquibase-core', version: v.liquibase) {
+        exclude group: 'org.eclipse.jetty'
+        exclude group: 'junit'
+    }
     compile group: 'com.augusttechgroup', name: 'groovy-liquibase-dsl', value: v.groovyLiquibase
 }
