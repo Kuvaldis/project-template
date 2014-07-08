@@ -19,7 +19,7 @@ class AppUser {
     @GeneratedValue(generator = 'app_user_seq', strategy = GenerationType.SEQUENCE)
     Long id
     String username
-    @Column(name = 'password')
+    @Column(name = 'pwd')
     String password
     @ElementCollection
     @CollectionTable(name = 'app_user_role', joinColumns = @JoinColumn(name = 'app_user_id'))

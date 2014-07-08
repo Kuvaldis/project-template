@@ -9,7 +9,7 @@ databaseChangeLog {
             column(name: 'username', type: 'VARCHAR(100)') {
                 constraints(nullable: false)
             }
-            column(name: 'password', type: 'VARCHAR(200)') {
+            column(name: 'pwd', type: 'VARCHAR(200)') {
                 constraints(nullable: false)
             }
         }
