@@ -1,0 +1,9 @@
+ext {
+    global = v
+    v = [:]
+    v.putAll global
+}
+
+dependencies {
+    compile project(':model')
+}

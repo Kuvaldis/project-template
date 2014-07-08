@@ -8,3 +8,10 @@ db {
 jpa {
     showSql = false
 }
+
+common {
+    admin {
+        name = 'admin'
+        password = 'admin'
+    }
+}

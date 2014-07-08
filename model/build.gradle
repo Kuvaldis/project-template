@@ -7,7 +7,8 @@ ext {
             groovyLiquibase: '1.0.0',
             persistence    : '2.0',
             batoo          : '2.0.1.2',
-            validation     : '1.1.0.Final'
+            validation     : '1.1.0.Final',
+            springData     : '1.6.0.RELEASE'
     ]
     v.putAll global
 }
@@ -24,6 +25,7 @@ dependencies {
     }
     compile group: 'org.springframework', name: 'spring-tx', version: v.spring
     compile group: 'org.springframework', name: 'spring-orm', version: v.spring
+    compile group: 'org.springframework.data', name: 'spring-data-jpa', version: v.springData
     compile group: 'org.batoo.jpa', name: 'persistence-api', version: v.persistence
     compile group: 'org.batoo.jpa', name: 'batoo-jpa', version: v.batoo
     compile group: 'javax.validation', name: 'validation-api', version: v.validation

@@ -2,7 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
     <context:annotation-config/>
     <context:component-scan base-package="kuvaldis.model"/>
@@ -22,7 +23,7 @@
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="kuvaldis.model.domain"/>
+        <property name="packagesToScan" value="kuvaldis.model.data.domain"/>
         <property name="validationMode" value="NONE"/>
         <property name="jpaVendorAdapter">
             <bean class="kuvaldis.model.orm.jpa.batoo.BatooJpaVendorAdapter">
@@ -33,16 +34,12 @@
         </property>
     </bean>
 
-    <bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory"/>
-    </bean>
-
-    <tx:annotation-driven transaction-manager="txManager"/>
-
     <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
         <property name="changeLog" value="classpath:migration/changelog/changelog-master.groovy"/>
         <property name="dataSource" ref="dataSource"/>
         <property name="shouldRun" value="false"/>
     </bean>
+
+    <jpa:repositories base-package="kuvaldis.model.data.repository"/>
 
 </beans>
