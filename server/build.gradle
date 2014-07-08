@@ -5,5 +5,6 @@ ext {
 }
 
 dependencies {
+    compile project(':model')
     compile group: 'commons-daemon', name: 'commons-daemon', version: v.commonsDaemon
 }

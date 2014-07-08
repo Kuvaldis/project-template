@@ -2,6 +2,7 @@ package kuvaldis.server
 
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
+import kuvaldis.model.migration.LiquibaseRunner
 import org.apache.commons.daemon.Daemon
 import org.apache.commons.daemon.DaemonContext
 import org.apache.commons.daemon.DaemonInitException
@@ -24,9 +25,12 @@ class Start implements Daemon {
         def start = System.currentTimeMillis()
         try {
             def ctx = new ClassPathXmlApplicationContext(
-                    'classpath:serverContext.xml')
+                    'classpath:serverContext.xml',
+                    'classpath*:modelContext.xml')
             ctx.registerShutdownHook()
             log.info("Context started in ${System.currentTimeMillis() - start} ms")
+            def lr = ctx.getBean(LiquibaseRunner)
+            lr.run()
         } catch (Exception e) {
             log.error('Application error : {}', e)
             System.exit(1)

@@ -6,5 +6,5 @@ db {
 }
 
 jpa {
-    showSql = true
+    showSql = false
 }

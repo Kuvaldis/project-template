@@ -5,8 +5,9 @@ ext {
             bonecp         : '0.8.0.RELEASE',
             liquibase      : '3.2.0',
             groovyLiquibase: '0.7.6',
-            persistence    : '1.0.2',
-            batoo          : '2.0.1.2'
+            persistence    : '2.0',
+            batoo          : '2.0.1.2',
+            validation     : '1.1.0.Final'
     ]
     v.putAll global
 }
@@ -23,6 +24,7 @@ dependencies {
     }
     compile group: 'org.springframework', name: 'spring-tx', version: v.spring
     compile group: 'org.springframework', name: 'spring-orm', version: v.spring
-    compile group: 'javax.persistence', name: 'persistence-api', version: v.persistence
+    compile group: 'org.batoo.jpa', name: 'persistence-api', version: v.persistence
     compile group: 'org.batoo.jpa', name: 'batoo-jpa', version: v.batoo
+    compile group: 'javax.validation', name: 'validation-api', version: v.validation
 }
