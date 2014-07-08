@@ -6,7 +6,12 @@ import kuvaldis.model.migration.LiquibaseRunner
 import org.apache.commons.daemon.Daemon
 import org.apache.commons.daemon.DaemonContext
 import org.apache.commons.daemon.DaemonInitException
+import org.slf4j.bridge.SLF4JBridgeHandler
 import org.springframework.context.support.ClassPathXmlApplicationContext
+
+import java.util.logging.Handler
+import java.util.logging.LogManager
+import java.util.logging.Logger
 
 /**
  * User: NFadin
@@ -22,6 +27,7 @@ class Start implements Daemon {
 
     public static void main(String[] args) {
         log.info('Start application')
+        prepareLoggers()
         def start = System.currentTimeMillis()
         try {
             def ctx = new ClassPathXmlApplicationContext(
@@ -35,6 +41,15 @@ class Start implements Daemon {
             log.error('Application error : {}', e)
             System.exit(1)
         }
+    }
+
+    private static prepareLoggers() {
+        log.debug('Prepare java util logger')
+        Logger javaRootLogger = LogManager.logManager.getLogger("")
+        for (Handler handler : javaRootLogger.handlers) {
+            javaRootLogger.removeHandler(handler)
+        }
+        SLF4JBridgeHandler.install()
     }
 
     @Override

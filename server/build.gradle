@@ -1,10 +1,17 @@
 ext {
+    global = v
     v = [
-            commonsDaemon: '1.0.15'
+            commonsDaemon: '1.0.15',
+            liquibaseSlf4j : '1.2.1'
     ]
+    v.putAll global
 }
 
 dependencies {
     compile project(':model')
     compile group: 'commons-daemon', name: 'commons-daemon', version: v.commonsDaemon
+    compile group: 'org.slf4j', name: 'jul-to-slf4j', version: v.slf4j
+    compile group: 'org.slf4j', name: 'log4j-over-slf4j', version: v.slf4j
+
+    runtime group: 'com.mattbertolini', name: 'liquibase-slf4j', version: v.liquibaseSlf4j
 }
