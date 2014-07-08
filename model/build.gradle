@@ -3,8 +3,8 @@ ext {
     v = [
             postgres       : '9.1-901.jdbc4',
             bonecp         : '0.8.0.RELEASE',
-            liquibase      : '3.2.0',
-            groovyLiquibase: '0.7.6',
+            liquibase      : '3.1.1',
+            groovyLiquibase: '1.0.0',
             persistence    : '2.0',
             batoo          : '2.0.1.2',
             validation     : '1.1.0.Final'
@@ -19,7 +19,7 @@ dependencies {
         exclude group: 'org.eclipse.jetty'
         exclude group: 'junit'
     }
-    compile(group: 'com.augusttechgroup', name: 'groovy-liquibase-dsl', version: v.groovyLiquibase) {
+    compile(group: 'net.saliman', name: 'groovy-liquibase-dsl', version: v.groovyLiquibase) {
         exclude group: 'org.eclipse.jetty'
     }
     compile group: 'org.springframework', name: 'spring-tx', version: v.spring
