@@ -21,23 +21,22 @@
         <property name="statementsCacheSize" value="100" />
     </bean>
 
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
+        <property name="changeLog" value="classpath:migration/changelog/changelog-master.groovy"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" depends-on="liquibase">
         <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan" value="kuvaldis.model.data.domain"/>
         <property name="validationMode" value="NONE"/>
         <property name="jpaVendorAdapter">
-            <bean class="kuvaldis.model.orm.jpa.batoo.BatooJpaVendorAdapter">
+            <bean class="kuvaldis.model.orm.jpa.batoo.BatooJpaVendorAdapter" depends-on="liquibase">
                 <property name="showSql" value="${jpa.showSql}"/>
                 <property name="generateDdl" value="false"/>
                 <property name="database" value="POSTGRESQL"/>
             </bean>
         </property>
-    </bean>
-
-    <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
-        <property name="changeLog" value="classpath:migration/changelog/changelog-master.groovy"/>
-        <property name="dataSource" ref="dataSource"/>
-        <property name="shouldRun" value="false"/>
     </bean>
 
     <jpa:repositories base-package="kuvaldis.model.data.repository"/>

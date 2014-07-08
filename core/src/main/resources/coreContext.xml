@@ -6,13 +6,13 @@
 
     <import resource="classpath*:modelContext.xml"/>
 
-    <context:annotation-config/>
-    <context:component-scan base-package="kuvaldis.core"/>
-
-    <bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
-    <tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+    <context:annotation-config/>
+    <context:component-scan base-package="kuvaldis.core"/>
 
 </beans>
