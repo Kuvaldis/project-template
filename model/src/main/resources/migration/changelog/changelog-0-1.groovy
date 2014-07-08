@@ -25,7 +25,7 @@ databaseChangeLog {
             column(name: 'app_user_id', type: 'INT') {
                 constraints(nullable: false)
             }
-            column(name: 'role', type: 'VARCHAR(100)') {
+            column(name: 'role_name', type: 'VARCHAR(100)') {
                 constraints(nullable: false)
             }
         }

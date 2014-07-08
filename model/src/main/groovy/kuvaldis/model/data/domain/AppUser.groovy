@@ -21,10 +21,11 @@ class AppUser {
     String username
     @Column(name = 'pwd')
     String password
-    @ElementCollection
+    @ElementCollection(targetClass = Role)
     @CollectionTable(name = 'app_user_role', joinColumns = @JoinColumn(name = 'app_user_id'))
     @Enumerated(EnumType.STRING)
-    List<Role> roles
+    @Column(name = 'role_name')
+    Set<Role> roles
 
     enum Role {
         USER, ADMIN

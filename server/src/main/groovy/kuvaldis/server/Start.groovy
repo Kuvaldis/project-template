@@ -32,9 +32,7 @@ class Start implements Daemon {
         prepareLoggers()
         def start = System.currentTimeMillis()
         try {
-            def ctx = new ClassPathXmlApplicationContext(
-                    'classpath:serverContext.xml',
-                    'classpath*:coreContext.xml')
+            def ctx = new ClassPathXmlApplicationContext('classpath:serverContext.xml')
             ctx.registerShutdownHook()
             log.info("Context started in ${System.currentTimeMillis() - start} ms")
         } catch (Exception e) {
