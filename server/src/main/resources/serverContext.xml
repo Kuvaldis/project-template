@@ -85,6 +85,12 @@
         </property>
     </bean>
 
+    <bean id="sessionHandler" class="org.eclipse.jetty.server.session.SessionHandler">
+        <constructor-arg name="manager">
+            <bean class="org.eclipse.jetty.server.session.HashSessionManager"/>
+        </constructor-arg>
+    </bean>
+
     <bean id="servletContextHandler" class="org.eclipse.jetty.servlet.ServletContextHandler">
         <property name="eventListeners">
             <list>
@@ -92,6 +98,7 @@
             </list>
         </property>
         <property name="servletHandler" ref="servletHandler"/>
+        <property name="sessionHandler" ref="sessionHandler"/>
     </bean>
 
     <!--server-->
