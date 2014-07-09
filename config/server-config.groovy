@@ -10,6 +10,7 @@ jpa {
 }
 
 common {
+    devMode = false
     admin {
         name = 'admin'
         password = 'admin'
