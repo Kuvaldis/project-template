@@ -8,6 +8,7 @@ import kuvaldis.model.migration.LiquibaseRunner
 import org.apache.commons.daemon.Daemon
 import org.apache.commons.daemon.DaemonContext
 import org.apache.commons.daemon.DaemonInitException
+import org.eclipse.jetty.server.Server
 import org.slf4j.bridge.SLF4JBridgeHandler
 import org.springframework.context.support.ClassPathXmlApplicationContext
 
@@ -35,6 +36,8 @@ class Start implements Daemon {
             def ctx = new ClassPathXmlApplicationContext('classpath:serverContext.xml')
             ctx.registerShutdownHook()
             log.info("Context started in ${System.currentTimeMillis() - start} ms")
+            def server = ctx.getBean('server', Server)
+            server.start()
         } catch (Exception e) {
             log.error('Application error : {}', e)
             System.exit(1)

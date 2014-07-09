@@ -5,6 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <import resource="classpath*:coreContext.xml"/>
+    <import resource="classpath*:restContext.xml"/>
 
     <context:annotation-config/>
     <context:component-scan base-package="kuvaldis.server"/>
@@ -23,4 +24,50 @@
         <property name="properties" ref="props"/>
     </bean>
 
+    <bean id="server" class="org.eclipse.jetty.server.Server">
+        <constructor-arg name="port" value="${server.port}"/>
+        <property name="handler">
+            <bean class="org.eclipse.jetty.server.handler.ContextHandlerCollection">
+                <property name="handlers">
+                    <list>
+                        <bean class="org.eclipse.jetty.servlet.ServletContextHandler">
+                            <property name="eventListeners">
+                                <list>
+                                    <bean class="kuvaldis.server.context.CurrentContextAwareContextLoaderListener"/>
+                                </list>
+                            </property>
+                            <property name="servletHandler">
+                                <bean class="org.eclipse.jetty.servlet.ServletHandler">
+                                    <property name="servlets">
+                                        <list>
+                                            <bean class="org.eclipse.jetty.servlet.ServletHolder">
+                                                <constructor-arg name="name" value="rest-api"/>
+                                                <constructor-arg name="servlet">
+                                                    <bean class="org.glassfish.jersey.servlet.ServletContainer">
+                                                        <constructor-arg name="resourceConfig">
+                                                            <bean class="kuvaldis.rest.RestConfig">
+                                                                <constructor-arg name="packages" value="kuvaldis.rest.resource"/>
+                                                            </bean>
+                                                        </constructor-arg>
+                                                    </bean>
+                                                </constructor-arg>
+                                            </bean>
+                                        </list>
+                                    </property>
+                                    <property name="servletMappings">
+                                        <list>
+                                            <bean class="org.eclipse.jetty.servlet.ServletMapping">
+                                                <property name="servletName" value="rest-api"/>
+                                                <property name="pathSpec" value="/api/v1/*"/>
+                                            </bean>
+                                        </list>
+                                    </property>
+                                </bean>
+                            </property>
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
 </beans>

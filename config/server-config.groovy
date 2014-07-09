@@ -15,3 +15,7 @@ common {
         password = 'admin'
     }
 }
+
+server {
+    port = 8080
+}

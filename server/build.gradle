@@ -2,16 +2,24 @@ ext {
     global = v
     v = [
             commonsDaemon: '1.0.15',
-            liquibaseSlf4j : '1.2.1'
+            liquibaseSlf4j : '1.2.1',
+            jetty: '9.2.1.v20140609'
     ]
     v.putAll global
 }
 
 dependencies {
     compile project(':core')
+    compile project(':rest-api')
     compile group: 'commons-daemon', name: 'commons-daemon', version: v.commonsDaemon
     compile group: 'org.slf4j', name: 'jul-to-slf4j', version: v.slf4j
     compile group: 'org.slf4j', name: 'log4j-over-slf4j', version: v.slf4j
+
+    compile(group: 'org.eclipse.jetty', name: 'jetty-server', version: v.jetty) {
+        exclude group: 'javax.servlet'
+    }
+    compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version: v.jetty
+    compile group: 'org.springframework', name: 'spring-web', version: v.spring
 
     runtime group: 'com.mattbertolini', name: 'liquibase-slf4j', version: v.liquibaseSlf4j
 }

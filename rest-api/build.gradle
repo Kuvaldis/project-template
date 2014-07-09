@@ -1,2 +1,18 @@
+ext {
+    global = v
+    v = [
+            servletApi: '3.1.0',
+            jersey: '2.10'
+    ]
+    v.putAll global
+}
+
 dependencies {
+    compile project(':core')
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version: v.servletApi
+
+    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: v.jersey
+    compile(group: 'org.glassfish.jersey.ext', name: 'jersey-spring3', version: v.jersey) {
+        exclude group: 'org.springframework'
+    }
 }
