@@ -2,7 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <import resource="classpath*:coreContext.xml"/>
     <import resource="classpath*:restContext.xml"/>
@@ -25,93 +26,100 @@
         <property name="properties" ref="props"/>
     </bean>
 
-    <!--servlet handler-->
-    <bean id="servletHandler" class="org.eclipse.jetty.servlet.ServletHandler">
-        <property name="filters">
-            <list>
-                <bean id="springSecurityFilterChain" class="org.eclipse.jetty.servlet.FilterHolder">
-                    <property name="className" value="org.springframework.web.filter.DelegatingFilterProxy"/>
-                    <property name="name" value="springSecurityFilterChain"/>
-                </bean>
-                <bean class="org.eclipse.jetty.servlet.FilterHolder">
-                    <property name="className" value="org.springframework.web.filter.CharacterEncodingFilter"/>
-                    <property name="name" value="encodingFilter"/>
-                    <property name="initParameters">
-                        <map>
-                            <entry key="encoding" value="UTF-8"/>
-                            <entry key="forceEncoding" value="true"/>
-                        </map>
-                    </property>
-                </bean>
-            </list>
-        </property>
-        <property name="filterMappings">
-            <list>
-                <bean class="org.eclipse.jetty.servlet.FilterMapping">
-                    <property name="filterName" value="springSecurityFilterChain"/>
-                    <property name="dispatcherTypes" value="#{T(java.util.EnumSet).allOf(T(javax.servlet.DispatcherType))}"/>
-                    <property name="pathSpec" value="/*"/>
-                </bean>
-                <bean class="org.eclipse.jetty.servlet.FilterMapping">
-                    <property name="filterName" value="encodingFilter"/>
-                    <property name="dispatcherTypes" value="#{T(java.util.EnumSet).allOf(T(javax.servlet.DispatcherType))}"/>
-                    <property name="pathSpec" value="/*"/>
-                </bean>
-            </list>
-        </property>
-        <property name="servlets">
-            <list>
-                <bean class="org.eclipse.jetty.servlet.ServletHolder">
-                    <constructor-arg name="name" value="rest-api"/>
-                    <constructor-arg name="servlet">
-                        <bean class="org.glassfish.jersey.servlet.ServletContainer">
-                            <constructor-arg name="resourceConfig">
-                                <bean class="kuvaldis.rest.RestConfig">
-                                    <constructor-arg name="packages" value="kuvaldis.rest.resource"/>
-                                </bean>
-                            </constructor-arg>
+    <util:list id="filters" value-type="org.eclipse.jetty.servlet.FilterHolder">
+        <bean id="springSecurityFilterChain" class="org.eclipse.jetty.servlet.FilterHolder">
+            <property name="className" value="org.springframework.web.filter.DelegatingFilterProxy"/>
+            <property name="name" value="springSecurityFilterChain"/>
+        </bean>
+        <bean class="org.eclipse.jetty.servlet.FilterHolder">
+            <property name="className" value="org.springframework.web.filter.CharacterEncodingFilter"/>
+            <property name="name" value="encodingFilter"/>
+            <property name="initParameters">
+                <map>
+                    <entry key="encoding" value="UTF-8"/>
+                    <entry key="forceEncoding" value="true"/>
+                </map>
+            </property>
+        </bean>
+    </util:list>
+
+    <!--filter mappings-->
+    <util:list id="filterMappings" value-type="org.eclipse.jetty.servlet.FilterMapping">
+        <bean class="org.eclipse.jetty.servlet.FilterMapping">
+            <property name="filterName" value="springSecurityFilterChain"/>
+            <property name="dispatcherTypes" value="#{T(java.util.EnumSet).allOf(T(javax.servlet.DispatcherType))}"/>
+            <property name="pathSpec" value="/*"/>
+        </bean>
+        <bean class="org.eclipse.jetty.servlet.FilterMapping">
+            <property name="filterName" value="encodingFilter"/>
+            <property name="dispatcherTypes" value="#{T(java.util.EnumSet).allOf(T(javax.servlet.DispatcherType))}"/>
+            <property name="pathSpec" value="/*"/>
+        </bean>
+    </util:list>
+
+    <!--servlets-->
+    <util:list id="servlets" value-type="org.eclipse.jetty.servlet.ServletHolder">
+        <bean class="org.eclipse.jetty.servlet.ServletHolder">
+            <constructor-arg name="name" value="rest-api"/>
+            <constructor-arg name="servlet">
+                <bean class="org.glassfish.jersey.servlet.ServletContainer">
+                    <constructor-arg name="resourceConfig">
+                        <bean class="kuvaldis.rest.RestConfig">
+                            <constructor-arg name="packages" value="kuvaldis.rest.resource"/>
                         </bean>
                     </constructor-arg>
                 </bean>
-            </list>
-        </property>
-        <property name="servletMappings">
-            <list>
-                <bean class="org.eclipse.jetty.servlet.ServletMapping">
-                    <property name="servletName" value="rest-api"/>
-                    <property name="pathSpec" value="/api/v1/*"/>
-                </bean>
-            </list>
-        </property>
+            </constructor-arg>
+        </bean>
+    </util:list>
+
+    <!--servlet mappings-->
+    <util:list id="servletMappings" value-type="org.eclipse.jetty.servlet.ServletMapping">
+        <bean class="org.eclipse.jetty.servlet.ServletMapping">
+            <property name="servletName" value="rest-api"/>
+            <property name="pathSpec" value="/api/v1/*"/>
+        </bean>
+    </util:list>
+
+    <!--servlet handler-->
+    <bean id="servletHandler" class="org.eclipse.jetty.servlet.ServletHandler">
+        <property name="filters" ref="filters"/>
+        <property name="filterMappings" ref="filterMappings"/>
+        <property name="servlets" ref="servlets"/>
+        <property name="servletMappings" ref="servletMappings"/>
     </bean>
 
+    <!--session handler-->
     <bean id="sessionHandler" class="org.eclipse.jetty.server.session.SessionHandler">
         <constructor-arg name="manager">
             <bean class="org.eclipse.jetty.server.session.HashSessionManager"/>
         </constructor-arg>
     </bean>
 
+    <!--web application context event listeners-->
+    <util:list id="eventListeners" value-type="java.util.EventListener">
+        <bean class="kuvaldis.server.context.CurrentContextAwareContextLoaderListener"/>
+    </util:list>
+
+    <!--servlet context-->
     <bean id="servletContextHandler" class="org.eclipse.jetty.servlet.ServletContextHandler">
-        <property name="eventListeners">
-            <list>
-                <bean class="kuvaldis.server.context.CurrentContextAwareContextLoaderListener"/>
-            </list>
-        </property>
+        <property name="eventListeners" ref="eventListeners"/>
         <property name="servletHandler" ref="servletHandler"/>
         <property name="sessionHandler" ref="sessionHandler"/>
+    </bean>
+
+    <!--server handlers-->
+    <bean id="serverHandler" class="org.eclipse.jetty.server.handler.ContextHandlerCollection">
+        <property name="handlers">
+            <list>
+                <ref bean="servletContextHandler"/>
+            </list>
+        </property>
     </bean>
 
     <!--server-->
     <bean id="server" class="org.eclipse.jetty.server.Server">
         <constructor-arg name="port" value="${server.port}"/>
-        <property name="handler">
-            <bean class="org.eclipse.jetty.server.handler.ContextHandlerCollection">
-                <property name="handlers">
-                    <list>
-                        <ref bean="servletContextHandler"/>
-                    </list>
-                </property>
-            </bean>
-        </property>
+        <property name="handler" ref="serverHandler"/>
     </bean>
 </beans>
