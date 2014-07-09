@@ -3,7 +3,6 @@ package kuvaldis.rest.resource
 import groovy.util.logging.Slf4j
 import kuvaldis.core.service.AppUserService
 import kuvaldis.model.data.domain.AppUser
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 import javax.annotation.PostConstruct
@@ -23,6 +22,7 @@ import javax.ws.rs.core.MediaType
 @Path('test')
 @Produces(MediaType.APPLICATION_JSON)
 class TestResource {
+
     @Inject
     private AppUserService appUserService
 

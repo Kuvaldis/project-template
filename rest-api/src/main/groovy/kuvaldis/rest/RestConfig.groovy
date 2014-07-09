@@ -1,6 +1,7 @@
 package kuvaldis.rest
 
 import groovy.transform.CompileStatic
+import kuvaldis.rest.exception.BaseExceptionMapper
 import org.glassfish.jersey.server.ResourceConfig
 
 /**
@@ -12,5 +13,6 @@ import org.glassfish.jersey.server.ResourceConfig
 class RestConfig extends ResourceConfig {
     RestConfig(String... packages) {
         this.packages(packages)
+        register(BaseExceptionMapper)
     }
 }
