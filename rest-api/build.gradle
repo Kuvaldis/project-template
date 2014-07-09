@@ -15,4 +15,5 @@ dependencies {
     compile(group: 'org.glassfish.jersey.ext', name: 'jersey-spring3', version: v.jersey) {
         exclude group: 'org.springframework'
     }
+    compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: v.jersey
 }
