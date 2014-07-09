@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest
  * @author Kuvaldis
  * Create date: 10.07.2014 0:26
  */
-@CompileStatic
 @TupleConstructor
 class AuthenticationSessionProcessingFilter extends GenericFilterBean {
 
