@@ -14,6 +14,7 @@ common {
         name = 'admin'
         password = 'admin'
     }
+    usernameSessionAttr = 'username'
 }
 
 server {

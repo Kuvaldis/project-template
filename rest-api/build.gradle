@@ -1,7 +1,6 @@
 ext {
     global = v
     v = [
-            servletApi: '3.1.0',
             jersey: '2.10'
     ]
     v.putAll global

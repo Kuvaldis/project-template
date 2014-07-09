@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+    <context:component-scan base-package="kuvaldis.security"/>
+
+    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+    <security:authentication-manager id="authenticationManager">
+        <security:authentication-provider user-service-ref="userService">
+            <security:password-encoder ref="passwordEncoder"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <bean id="unauthorizedEntryPoint" class="kuvaldis.security.UnauthorizedEntryPoint"/>
+
+    <bean id="authenticationUserProcessingFilter" class="kuvaldis.security.AuthenticationSessionProcessingFilter">
+        <property name="userDetailsService" ref="userService"/>
+        <property name="usernameSessionAttr" value="${common.usernameSessionAttr}"/>
+    </bean>
+
+    <security:http
+            pattern="/api/**"
+            realm="Protected api"
+            use-expressions="true"
+            auto-config="false"
+            create-session="stateless"
+            entry-point-ref="unauthorizedEntryPoint"
+            authentication-manager-ref="authenticationManager">
+        <security:custom-filter ref="authenticationUserProcessingFilter" position="FORM_LOGIN_FILTER"/>
+
+        <security:intercept-url method="GET" pattern="/api/*/buildinfo/**" access="permitAll"/>
+
+        <security:intercept-url method="GET" pattern="/api/*/login/**" access="permitAll"/>
+        <security:intercept-url method="POST" pattern="/api/*/login/**" access="permitAll"/>
+        <security:intercept-url method="PUT" pattern="/api/*/login/**" access="denyAll"/>
+        <security:intercept-url method="DELETE" pattern="/api/*/login/**" access="denyAll"/>
+
+        <security:intercept-url method="GET" pattern="/api/**" access="hasRole('ADMIN')"/>
+        <security:intercept-url method="POST" pattern="/api/**" access="hasRole('ADMIN')"/>
+        <security:intercept-url method="PUT" pattern="/api/**" access="hasRole('ADMIN')"/>
+        <security:intercept-url method="DELETE" pattern="/api/**" access="hasRole('ADMIN')"/>
+    </security:http>
+
+</beans>
