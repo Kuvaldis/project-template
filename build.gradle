@@ -26,7 +26,8 @@ configure(subprojects - project('web')) {
                 slf4j: '1.7.7',
                 log4j: '1.2.17',
                 logback: '1.1.2',
-                spock: '0.7-groovy-2.0'
+                spock: '0.7-groovy-2.0',
+                cglib: '3.1'
         ]
     }
     dependencies {
@@ -37,5 +38,7 @@ configure(subprojects - project('web')) {
         compile group: 'ch.qos.logback', name: 'logback-classic', version: v.logback
 
         testCompile group: 'org.spockframework', name: 'spock-core', version: v.spock
+        testRuntime group: 'cglib', name: 'cglib-nodep', version: v.cglib
+
     }
 }

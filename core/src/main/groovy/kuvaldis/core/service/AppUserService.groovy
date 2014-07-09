@@ -19,7 +19,7 @@ class AppUserService {
     @Autowired
     private AppUserRepository appUserRepository
 
-    void create(AppUser appUser) {
+    AppUser create(AppUser appUser) {
         appUserRepository.save(appUser)
     }
 

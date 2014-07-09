@@ -18,12 +18,12 @@ import org.springframework.transaction.annotation.Transactional
 class AddAdminJob extends AbstractDeployJob {
 
     @Autowired
-    private AppUserService appUserService
+    AppUserService appUserService
 
     @Value('${common.admin.name}')
-    private String adminName
+    String adminName
     @Value('${common.admin.password}')
-    private String adminPassword
+    String adminPassword
 
     @Override
     @Transactional
