@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class AppUserService {
     @Autowired
-    private AppUserRepository appUserRepository
+    AppUserRepository appUserRepository
 
     AppUser create(AppUser appUser) {
         appUserRepository.save(appUser)
