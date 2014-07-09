@@ -2,9 +2,6 @@ package kuvaldis.server
 
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
-import kuvaldis.core.service.AppUserService
-import kuvaldis.model.data.domain.AppUser
-import kuvaldis.model.migration.LiquibaseRunner
 import org.apache.commons.daemon.Daemon
 import org.apache.commons.daemon.DaemonContext
 import org.apache.commons.daemon.DaemonInitException
