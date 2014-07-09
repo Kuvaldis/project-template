@@ -41,7 +41,7 @@ class AuthenticationSessionProcessingFilter extends GenericFilterBean {
         if (username) {
             userDetails = userDetailsService.loadUserByUsername(username)
         } else if (devMode) { // in dev mode you can go anywhere
-            userDetails = new User('developer', 'developer', EnumSet.allOf(AppUser.Role).collect {
+            userDetails = new User('developer', 'developer', AppUser.Role.values().collect {
                 new SimpleGrantedAuthority(it.name())
             })
         }
