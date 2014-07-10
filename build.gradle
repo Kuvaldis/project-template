@@ -30,7 +30,8 @@ configure(subprojects - project('web')) {
                 spock     : '0.7-groovy-2.0',
                 cglib     : '3.1',
                 servletApi: '3.1.0',
-                objenesis : '2.1'
+                objenesis : '2.1',
+                codenarc  : '0.21'
         ]
     }
     dependencies {
@@ -49,6 +50,11 @@ configure(subprojects - project('web')) {
     codenarc {
         ignoreFailures = true
         configFile = file("${project.parent.projectDir}/config/codenarc/codenarc.groovy")
-        reportsDir = file("${project.parent.projectDir}/report/codenarc/${project.name}")
+        reportsDir = file("${project.parent.projectDir}/reports/codenarc/${project.name}")
+        toolVersion = v.codenarc
     }
+}
+
+task clean(type: Delete) {
+    delete "${project.projectDir}/reports"
 }
