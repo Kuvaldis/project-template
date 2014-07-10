@@ -53,9 +53,10 @@ class AuthenticationSessionProcessingFilter extends GenericFilterBean {
         chain.doFilter(request, response);
     }
 
-    private static HttpServletRequest getAsHttpRequest(ServletRequest request) {
+    @SuppressWarnings('GrMethodMayBeStatic')
+    private HttpServletRequest getAsHttpRequest(ServletRequest request) {
         if (!(request instanceof HttpServletRequest)) {
-            throw new RuntimeException("Expecting an HTTP request");
+            throw new RuntimeException('Expecting an HTTP request');
         }
         return (HttpServletRequest) request;
     }
