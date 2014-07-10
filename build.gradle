@@ -33,7 +33,7 @@ configure(subprojects - project('web')) {
         ]
     }
     dependencies {
-        groovy group: 'org.codehaus.groovy', name: 'groovy-all', version: v.groovy
+        compile group: 'org.codehaus.groovy', name: 'groovy-all', version: v.groovy
 
         compile group: 'org.springframework', name: 'spring-context', version: v.spring
         compile group: 'org.slf4j', name: 'slf4j-api', version: v.slf4j

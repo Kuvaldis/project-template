@@ -10,6 +10,8 @@ ext {
     nodeDir = "${project.projectDir}/node"
     nodeModulesDir = "${project.projectDir}/node_modules"
     bowerDir = "${project.projectDir}/vendor"
+    distDir = "${project.projectDir}/dist"
+    appDir = "${project.projectDir}/app"
 }
 
 apply plugin: 'node'
@@ -27,11 +29,14 @@ task cleanNode(type: Delete) {
     delete nodeModulesDir, bowerDir
 }
 
+task gulpBuildClean(type: Delete) {
+    delete appDir, distDir
+}
+
 task clean << {
     println 'Run clean'
 }
-clean.dependsOn 'gulp_clean'
-clean.dependsOn 'cleanNode'
+clean.dependsOn 'gulpBuildClean'
 
 task gulpClean << {
     println 'Run gulp clean'
@@ -57,14 +62,7 @@ task build << {
     println 'Run build'
 }
 build.dependsOn 'bower'
-build.dependsOn 'gulp_build'
-gulp_build.mustRunAfter 'bower'
-
-task dist << {
-    println 'Run dist'
-}
-dist.dependsOn 'bower'
-dist.dependsOn 'gulp_dist'
+build.dependsOn 'gulp_dist'
 gulp_dist.mustRunAfter 'bower'
 
 task dev << {
