@@ -8,7 +8,7 @@ import spock.lang.Specification
  * Time: 17:57
  */
 class DeployJobExecutorTest extends Specification {
-    def "jobs should be runned according to priority"() {
+    def "jobs should be run according to priority"() {
         given:
             def j1 = job(JobPriority.SMALL)
             def j2 = job(JobPriority.BIG)
