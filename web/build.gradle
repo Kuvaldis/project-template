@@ -58,13 +58,6 @@ task bower(dependsOn: 'npmInstall', type: Exec) {
 
 }
 
-task build << {
-    println 'Run build'
-}
-build.dependsOn 'bower'
-build.dependsOn 'gulp_dist'
-gulp_dist.mustRunAfter 'bower'
-
 task dev << {
     println 'Run in dev mode'
 }
@@ -82,3 +75,18 @@ test.dependsOn 'gulp_test'
 test.dependsOn 'npmInstall'
 test.dependsOn 'installGulp'
 gulp_test.mustRunAfter 'installGulp'
+
+task zip(type: Zip) {
+    baseName 'web'
+    from("${project.projectDir}") {
+        include 'app/**'
+        include 'dist/**'
+    }
+    destinationDir = file("${project.projectDir}/distributions")
+}
+
+task build << {}
+build.dependsOn 'bower'
+build.dependsOn 'gulp_dist'
+build.dependsOn 'zip'
+gulp_dist.mustRunAfter 'bower'
