@@ -1,9 +1,9 @@
 ext {
     global = v
     v = [
-            commonsDaemon: '1.0.15',
-            liquibaseSlf4j : '1.2.1',
-            jetty: '9.2.1.v20140609',
+            commonsDaemon : '1.0.15',
+            liquibaseSlf4j: '1.2.1',
+            jetty         : '9.2.1.v20140609',
             springSecurity: '3.2.4.RELEASE'
     ]
     v.putAll global
@@ -30,3 +30,42 @@ dependencies {
 
     runtime group: 'com.mattbertolini', name: 'liquibase-slf4j', version: v.liquibaseSlf4j
 }
+
+
+task libs(type: Sync) {
+    from configurations.runtime
+    into "$buildDir/lib"
+}
+
+task copyConfig(type: Sync) {
+    from "$buildDir/../../config/server-config.groovy",
+            "$buildDir/../../config/server-profiles-config.groovy"
+    into "$buildDir/config"
+}
+
+jar {
+    baseName = 'server'
+    destinationDir = file("$buildDir")
+    manifest {
+        attributes(
+                'Main-Class': 'kuvaldis.server.Start',
+                'Class-Path': configurations.runtime.collect { "lib/${it.name}" }.join(" ")
+        )
+    }
+}
+
+task zip(type: Zip) {
+    baseName 'server'
+    from("$buildDir") {
+        include 'config/**'
+        include 'lib/**'
+        include 'server-*.jar'
+    }
+}
+
+task build(overwrite: true) {
+}
+build.dependsOn 'jar'
+build.dependsOn 'libs'
+build.dependsOn 'copyConfig'
+build.dependsOn 'zip'
