@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component
 @Slf4j
 @Component('propertiesBuilder')
 class PropertiesBuilder {
+    @SuppressWarnings('GrMethodMayBeStatic')
     PropertiesHolder build(final String mainConfig, final String profilesConfig = null, final String devConfig = null) {
         final mainConfigFile
         if (!mainConfig || !(mainConfigFile = new File(mainConfig)).exists()) {
@@ -23,9 +24,7 @@ class PropertiesBuilder {
             config.merge(new ConfigSlurper().parse(devConfigFile.toURI().toURL()))
         } else {
             def env = System.getProperty('env')
-            if (!env) {
-                log.info('Run with default profile')
-            } else {
+            if (env) {
                 log.info("Run with profile '$env'")
                 final profilesConfigFile
                 if (!profilesConfig || !(profilesConfigFile = new File(profilesConfig)).exists()) {
@@ -33,6 +32,8 @@ class PropertiesBuilder {
                             "Profiles config doesn't exist: '$profilesConfig'")
                 }
                 config.merge(new ConfigSlurper(env).parse(profilesConfigFile.toURI().toURL()))
+            } else {
+                log.info('Run with default profile')
             }
 
         }

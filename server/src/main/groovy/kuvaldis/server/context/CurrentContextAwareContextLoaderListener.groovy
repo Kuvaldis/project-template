@@ -14,11 +14,11 @@ import javax.servlet.ServletContext
  * Time: 12:43
  */
 class CurrentContextAwareContextLoaderListener extends ContextLoaderListener implements ApplicationContextAware {
-    private ApplicationContext applicationContext;
+    private ApplicationContext applicationContext
 
     @Override
     protected WebApplicationContext createWebApplicationContext(ServletContext sc) {
-        return applicationContext as WebApplicationContext
+        applicationContext as WebApplicationContext
     }
 
     @Override

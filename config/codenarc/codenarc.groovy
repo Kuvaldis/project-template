@@ -78,7 +78,6 @@ ruleset {
 
     // design
     AbstractClassWithPublicConstructor
-    AbstractClassWithoutAbstractMethod
     BooleanMethodReturnsNull
     BuilderMethodWithSideEffects
     CloneableWithoutClone
@@ -179,7 +178,6 @@ ruleset {
     GetterMethodCouldBeProperty
     GroovyLangImmutable
     GStringAsMapKey
-    GStringExpressionWithinString
     UseCollectMany
     UseCollectNested
 
@@ -213,12 +211,16 @@ ruleset {
     ClassNameSameAsFilename
     ConfusingMethodName
     FieldName
-    MethodName
+    MethodName {
+        regex = /[a-z][\S\s]*/
+    }
     ObjectOverrideMisspelledMethodName
     PackageName
     ParameterName
     PropertyName
-    VariableName
+    VariableName {
+        finalRegex = regex
+    }
 
     // size
     ClassSize // default 1000 rows

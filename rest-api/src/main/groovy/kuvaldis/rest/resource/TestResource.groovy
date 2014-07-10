@@ -5,7 +5,6 @@ import kuvaldis.core.service.AppUserService
 import kuvaldis.model.data.domain.AppUser
 import org.springframework.stereotype.Component
 
-import javax.annotation.PostConstruct
 import javax.inject.Inject
 import javax.ws.rs.GET
 import javax.ws.rs.Path
@@ -27,7 +26,7 @@ class TestResource {
     private AppUserService appUserService
 
     @GET
-    public AppUser get() {
+    AppUser get() {
         appUserService.find('admin')
     }
 }

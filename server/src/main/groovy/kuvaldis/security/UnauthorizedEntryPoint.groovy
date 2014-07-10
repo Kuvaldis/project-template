@@ -15,7 +15,8 @@ import javax.servlet.http.HttpServletResponse
 @CompileStatic
 class UnauthorizedEntryPoint implements AuthenticationEntryPoint {
     @Override
-    void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
+            throws IOException, ServletException {
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, 'Unauthorized')
     }
 }

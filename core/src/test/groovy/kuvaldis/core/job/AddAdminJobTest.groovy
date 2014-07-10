@@ -11,8 +11,8 @@ import spock.lang.Specification
  */
 class AddAdminJobTest extends Specification {
 
-    private adminName = 'admin'
-    private adminPassword = 'admin'
+    private final adminName = 'admin'
+    private final adminPassword = 'admin'
 
     def "do not create admin if exists"() {
         given:

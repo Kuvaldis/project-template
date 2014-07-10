@@ -10,7 +10,7 @@ import org.springframework.beans.factory.config.PropertiesFactoryBean
  */
 @TupleConstructor
 class MultiConfigPropertiesFactoryBean extends PropertiesFactoryBean {
-    PropertiesHolder propertiesHolder;
+    PropertiesHolder propertiesHolder
 
     @Override
     protected void loadProperties(Properties props) throws IOException {

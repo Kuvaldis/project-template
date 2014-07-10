@@ -1,7 +1,6 @@
 package kuvaldis.rest.exception
 
 import groovy.util.logging.Slf4j
-import org.springframework.stereotype.Component
 
 import javax.ws.rs.WebApplicationException
 import javax.ws.rs.core.Response

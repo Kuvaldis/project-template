@@ -10,8 +10,8 @@ import spock.lang.Specification
  */
 class AppUserServiceTest extends Specification {
 
-    private username1 = 'username1'
-    private username2 = 'username2'
+    private final username1 = 'username1'
+    private final username2 = 'username2'
 
     def "user is available by name after creation"() {
         given:

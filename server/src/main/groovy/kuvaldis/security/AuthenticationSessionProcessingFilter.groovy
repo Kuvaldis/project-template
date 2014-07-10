@@ -1,6 +1,5 @@
 package kuvaldis.security
 
-import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 import kuvaldis.model.data.domain.AppUser
 import org.springframework.beans.factory.annotation.Value
@@ -26,39 +25,44 @@ import javax.servlet.http.HttpServletRequest
 @TupleConstructor
 class AuthenticationSessionProcessingFilter extends GenericFilterBean {
 
+    private static final String DEVELOPER_USERNAME = 'developer'
+    private static final String DEVELOPER_PASSWORD = DEVELOPER_USERNAME
+
     @Value('${common.devMode}')
     Boolean devMode
-
     private UserDetailsService userDetailsService
+
     private String usernameSessionAttr
 
     @Override
-    void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpRequest = getAsHttpRequest(request);
+    void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        HttpServletRequest httpRequest = getAsHttpRequest(request)
         String username = httpRequest.session.getAttribute(usernameSessionAttr)
         UserDetails userDetails = null
         if (username) {
             userDetails = userDetailsService.loadUserByUsername(username)
         } else if (devMode) { // in dev mode you can go anywhere
-            userDetails = new User('developer', 'developer', AppUser.Role.values().collect {
-                new SimpleGrantedAuthority(it.name())
-            })
+            userDetails = new User(DEVELOPER_USERNAME, DEVELOPER_PASSWORD,
+                    AppUser.Role.values().collect {
+                        new SimpleGrantedAuthority(it.name())
+                    })
         }
         if (userDetails) {
             UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities);
-            authentication.details = new WebAuthenticationDetailsSource().buildDetails(httpRequest);
-            SecurityContextHolder.context.authentication = authentication;
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
+            authentication.details = new WebAuthenticationDetailsSource().buildDetails(httpRequest)
+            SecurityContextHolder.context.authentication = authentication
         }
-        chain.doFilter(request, response);
+        chain.doFilter(request, response)
     }
 
     @SuppressWarnings('GrMethodMayBeStatic')
     private HttpServletRequest getAsHttpRequest(ServletRequest request) {
         if (!(request instanceof HttpServletRequest)) {
-            throw new RuntimeException('Expecting an HTTP request');
+            throw new RuntimeException('Expecting an HTTP request')
         }
-        return (HttpServletRequest) request;
+        (HttpServletRequest) request
     }
 
     void setUserDetailsService(UserDetailsService userDetailsService) {

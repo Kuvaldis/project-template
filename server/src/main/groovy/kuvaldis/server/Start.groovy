@@ -25,7 +25,7 @@ class Start implements Daemon {
     private static ClassPathXmlApplicationContext context
     private String[] arguments = new String[0]
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         log.info('Start application')
         prepareLoggers()
         def start = System.currentTimeMillis()
@@ -37,13 +37,12 @@ class Start implements Daemon {
             server.start()
         } catch (Exception e) {
             log.error('Application error : {}', e)
-            System.exit(1)
         }
     }
 
     private static prepareLoggers() {
         log.debug('Prepare java util logger')
-        Logger javaRootLogger = LogManager.logManager.getLogger("")
+        Logger javaRootLogger = LogManager.logManager.getLogger('')
         for (Handler handler : javaRootLogger.handlers) {
             javaRootLogger.removeHandler(handler)
         }
@@ -52,7 +51,7 @@ class Start implements Daemon {
 
     @Override
     void init(DaemonContext context) throws DaemonInitException, Exception {
-        arguments = context.getArguments()
+        arguments = context.arguments
     }
 
     @Override

@@ -11,7 +11,7 @@ import groovy.transform.CompileStatic
 class PropertiesHolder {
     ConfigObject configObject
 
-    public Properties toProperties() {
+    Properties toProperties() {
         configObject.toProperties()
     }
 }

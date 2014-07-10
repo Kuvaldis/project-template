@@ -13,8 +13,9 @@ import javax.persistence.spi.PersistenceProvider
 class BatooJpaVendorAdapter extends AbstractJpaVendorAdapter {
 
     private final jpaPersistenceProvider = new BatooPersistenceProvider()
+    private final jpaDialect = new BatooJpaDialect()
 
-    private final jpaDialect = new BatooJpaDialect();
+    final String persistenceProviderRootPackage = 'org.batoo.jpa'
 
     @Override
     PersistenceProvider getPersistenceProvider() {
@@ -30,16 +31,11 @@ class BatooJpaVendorAdapter extends AbstractJpaVendorAdapter {
     Map<String, ?> getJpaPropertyMap() {
         final jpaProperties = [:]
         if (generateDdl) {
-            jpaProperties << ['org.batoo.jpa.ddl': 'UPDATE'];
+            jpaProperties << ['org.batoo.jpa.ddl': 'UPDATE']
         }
         if (showSql) {
-            jpaProperties << ['org.batoo.jpa.sql_logging': 'STDOUT'];
+            jpaProperties << ['org.batoo.jpa.sql_logging': 'STDOUT']
         }
-        jpaProperties;
-    }
-
-    @Override
-    String getPersistenceProviderRootPackage() {
-        'org.batoo.jpa'
+        jpaProperties
     }
 }

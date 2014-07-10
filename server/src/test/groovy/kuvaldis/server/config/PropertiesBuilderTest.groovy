@@ -33,7 +33,9 @@ class PropertiesBuilderTest extends Specification {
 
     def "loads developer properties even if profiles properties are present"() {
         when:
-            def p = propertiesBuilder('testConfig.groovy', 'testProfilesConfig.groovy', 'testDevConfig.groovy').toProperties()
+            def p = propertiesBuilder('testConfig.groovy',
+                    'testProfilesConfig.groovy',
+                    'testDevConfig.groovy').toProperties()
         then:
             p.size() == 3
             p.getProperty('prop1') == '1'
@@ -41,7 +43,7 @@ class PropertiesBuilderTest extends Specification {
             p.getProperty('prop2.prop2') == '2.2'
     }
 
-    def "loads default if developer properties aren't present even if profiles properties are present without env variable set"() {
+    def "loads default if dev properties not present even if profiles properties present without env variable"() {
         when:
             def p = propertiesBuilder('testConfig.groovy', 'testProfilesConfig.groovy').toProperties()
         then:
@@ -81,7 +83,8 @@ class PropertiesBuilderTest extends Specification {
             thrown(IllegalArgumentException)
     }
 
-    private PropertiesHolder propertiesBuilder(final String main = null, final String profiles = null, final String dev = null) {
+    private PropertiesHolder propertiesBuilder(
+            final String main = null, final String profiles = null, final String dev = null) {
         def cl = this.class.classLoader
         new PropertiesBuilder().build(
                 main ? cl.getResource(main)?.file : null,
