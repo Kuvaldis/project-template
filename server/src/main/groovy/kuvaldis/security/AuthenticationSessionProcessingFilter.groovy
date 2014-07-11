@@ -4,7 +4,6 @@ import groovy.transform.TupleConstructor
 import kuvaldis.model.data.domain.AppUser
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
@@ -17,6 +16,8 @@ import javax.servlet.ServletException
 import javax.servlet.ServletRequest
 import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
+
+import static kuvaldis.security.util.RoleUtil.toAuthorities
 
 /**
  * @author Kuvaldis
@@ -44,9 +45,7 @@ class AuthenticationSessionProcessingFilter extends GenericFilterBean {
             userDetails = userDetailsService.loadUserByUsername(username)
         } else if (devMode) { // in dev mode you can go anywhere
             userDetails = new User(DEVELOPER_USERNAME, DEVELOPER_PASSWORD,
-                    AppUser.Role.values().collect {
-                        new SimpleGrantedAuthority(it.name())
-                    })
+                    toAuthorities(AppUser.Role.values()))
         }
         if (userDetails) {
             UsernamePasswordAuthenticationToken authentication =
