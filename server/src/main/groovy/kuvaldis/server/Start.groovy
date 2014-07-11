@@ -33,8 +33,6 @@ class Start implements Daemon {
             context = new ClassPathXmlApplicationContext('classpath:serverContext.xml')
             context.registerShutdownHook()
             log.info("Context started in ${System.currentTimeMillis() - start} ms")
-            def server = context.getBean('server', Server)
-            server.start()
         } catch (Exception e) {
             log.error('Application error : {}', e)
         }
