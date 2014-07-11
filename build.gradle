@@ -67,6 +67,10 @@ configure(subprojects - project('web')) {
 
     }
 
+    test {
+        workingDir = file("${project.parent.projectDir}")
+    }
+
     codenarc {
         ignoreFailures = true
         configFile = file("${project.parent.projectDir}/config/codenarc/codenarc.groovy")
