@@ -40,7 +40,8 @@ configure(subprojects - project('web')) {
                 cglib     : '3.1',
                 servletApi: '3.1.0',
                 objenesis : '2.1',
-                codenarc  : '0.21'
+                codenarc  : '0.21',
+                aspectj: '1.8.1'
         ]
     }
     dependencies {
@@ -51,6 +52,7 @@ configure(subprojects - project('web')) {
         compile(group: 'ch.qos.logback', name: 'logback-classic', version: v.logback) {
             exclude group: 'org.slf4j'
         }
+        compile group: 'org.aspectj', name: 'aspectjweaver', version: v.aspectj
 
         testCompile(group: 'org.spockframework', name: 'spock-core', version: v.spock) {
             exclude group: 'org.codehaus.groovy'
