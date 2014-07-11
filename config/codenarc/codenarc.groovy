@@ -18,7 +18,6 @@ ruleset {
     EmptyForStatement
     EmptyIfStatement
     EmptyInstanceInitializer
-    EmptyMethod
     EmptyStaticInitializer
     EmptySwitchStatement
     EmptySynchronizedStatement
@@ -139,7 +138,6 @@ ruleset {
     SpaceAfterClosingBrace
     SpaceAfterFor
     SpaceAfterIf
-    SpaceAfterOpeningBrace
     SpaceAfterSemicolon
     SpaceAfterSwitch
     SpaceAfterWhile

@@ -2,10 +2,7 @@ package kuvaldis.security.service
 
 import kuvaldis.core.service.AppUserService
 import kuvaldis.model.data.domain.AppUser
-import org.springframework.security.core.userdetails.User
 import spock.lang.Specification
-
-import static kuvaldis.security.util.RoleUtil.toAuthorities
 
 /**
  * @author Kuvaldis
@@ -38,6 +35,6 @@ class UserServiceTest extends Specification {
         then:
         u?.username == username
         u?.authorities?.size() == 1 &&
-        u.authorities[0].authority == role.name()
+                u.authorities[0].authority == role.name()
     }
 }

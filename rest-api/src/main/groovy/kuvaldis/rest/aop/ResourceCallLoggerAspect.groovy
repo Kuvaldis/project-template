@@ -18,22 +18,22 @@ import org.springframework.stereotype.Component
 class ResourceCallLoggerAspect {
 
     @Pointcut('within(kuvaldis.rest.resource..*)')
-    private void withinResources() {}
+    void withinResources() {}
 
     @Pointcut('@annotation(javax.ws.rs.GET)')
-    private void getMethod() {}
+    void getMethod() {}
 
     @Pointcut('@annotation(javax.ws.rs.POST)')
-    private void postMethod() {}
+    void postMethod() {}
 
     @Pointcut('@annotation(javax.ws.rs.PUT)')
-    private void putMethod() {}
+    void putMethod() {}
 
     @Pointcut('@annotation(javax.ws.rs.DELETE)')
-    private void deleteMethod() {}
+    void deleteMethod() {}
 
     @Pointcut('getMethod() || postMethod() || putMethod() || deleteMethod()')
-    private void restMethod() {}
+    void restMethod() {}
 
     @Before('withinResources() && getMethod()')
     void logGetMethodCall(JoinPoint joinPoint) {

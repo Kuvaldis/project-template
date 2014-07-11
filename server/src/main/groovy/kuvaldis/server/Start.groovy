@@ -5,7 +5,6 @@ import groovy.util.logging.Slf4j
 import org.apache.commons.daemon.Daemon
 import org.apache.commons.daemon.DaemonContext
 import org.apache.commons.daemon.DaemonInitException
-import org.eclipse.jetty.server.Server
 import org.slf4j.bridge.SLF4JBridgeHandler
 import org.springframework.context.support.ClassPathXmlApplicationContext
 

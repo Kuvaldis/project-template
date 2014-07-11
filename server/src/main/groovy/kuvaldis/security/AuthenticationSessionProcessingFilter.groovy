@@ -45,7 +45,7 @@ class AuthenticationSessionProcessingFilter extends GenericFilterBean {
             userDetails = userDetailsService.loadUserByUsername(username)
         } else if (devMode) { // in dev mode you can go anywhere
             userDetails = new User(DEVELOPER_USERNAME, DEVELOPER_PASSWORD,
-                    toAuthorities(AppUser.Role.values()))
+                    toAuthorities(EnumSet.allOf(AppUser.Role)))
         }
         if (userDetails) {
             UsernamePasswordAuthenticationToken authentication =

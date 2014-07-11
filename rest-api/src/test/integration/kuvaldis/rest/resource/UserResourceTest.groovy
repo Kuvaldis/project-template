@@ -8,7 +8,6 @@ import org.glassfish.jersey.test.DeploymentContext
 import org.glassfish.jersey.test.jetty.JettyTestContainerFactory
 import org.glassfish.jersey.test.spi.TestContainer
 import org.springframework.context.support.ClassPathXmlApplicationContext
-import org.springframework.test.context.ContextConfiguration
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -21,7 +20,8 @@ import javax.ws.rs.client.ClientBuilder
  */
 class UserResourceTest extends Specification {
 
-    @Shared protected TestContainer container
+    @Shared
+    protected TestContainer container
 
     def setupSpec() {
         final ResourceConfig rc = new RestConfig('kuvaldis.rest')
@@ -38,14 +38,14 @@ class UserResourceTest extends Specification {
         container?.stop()
     }
 
-    def "try something" () {
+    def "try something"() {
         given:
-            def config = new ClientConfig()
-            def client = ClientBuilder.newClient(config)
-            def target = client.target(container.baseUri)
+        def config = new ClientConfig()
+        def client = ClientBuilder.newClient(config)
+        def target = client.target(container.baseUri)
         when:
-            def response = target.path('/user').request().get(AppUser)
+        def response = target.path('/user').request().get(AppUser)
         then:
-            response?.username == 'admin'
+        response?.username == 'admin'
     }
 }
