@@ -4,6 +4,20 @@
        xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
+    <bean id="propertiesHolder" factory-bean="propertiesBuilder" factory-method="build">
+        <constructor-arg value="config/server-config.groovy"/>
+        <constructor-arg value="config/server-profiles-config.groovy"/>
+        <constructor-arg value="config/server-dev-config.groovy"/>
+    </bean>
+
+    <bean id="props" class="kuvaldis.core.config.MultiConfigPropertiesFactoryBean" depends-on="propertiesHolder">
+        <constructor-arg name="propertiesHolder" ref="propertiesHolder"/>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" depends-on="props">
+        <property name="properties" ref="props"/>
+    </bean>
+
     <import resource="classpath*:modelContext.xml"/>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">

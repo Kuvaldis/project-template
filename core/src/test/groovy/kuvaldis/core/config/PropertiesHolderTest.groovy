@@ -1,21 +1,19 @@
-package kuvaldis.server.config
+package kuvaldis.core.config
 
 import spock.lang.Specification
 
 /**
  * User: NFadin
  * Date: 07.07.2014
- * Time: 16:35
+ * Time: 16:56
  */
-class MultiConfigPropertiesFactoryBeanTest extends Specification {
-    def "should load properties from properties holder"() {
+class PropertiesHolderTest extends Specification {
+    def "should load properties from config object"() {
         given:
             def ph = new PropertiesHolder(configObject:
                     new ConfigSlurper().parse(this.class.classLoader.getResource('testConfig.groovy')))
-            def m = new MultiConfigPropertiesFactoryBean(propertiesHolder: ph)
-            def p = new Properties()
         when:
-            m.loadProperties(p)
+            def p = ph.toProperties()
         then:
             p.size() == 3
             p.getProperty('prop1') == '1'

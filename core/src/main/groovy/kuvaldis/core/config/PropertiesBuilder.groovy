@@ -1,4 +1,4 @@
-package kuvaldis.server.config
+package kuvaldis.core.config
 
 import groovy.util.logging.Slf4j
 import org.springframework.stereotype.Component

@@ -41,7 +41,7 @@ configure(subprojects - project('web')) {
                 servletApi: '3.1.0',
                 objenesis : '2.1',
                 codenarc  : '0.21',
-                aspectj: '1.8.1'
+                aspectj   : '1.8.1'
         ]
     }
     dependencies {
@@ -54,7 +54,8 @@ configure(subprojects - project('web')) {
         }
         compile group: 'org.aspectj', name: 'aspectjweaver', version: v.aspectj
 
-        testCompile(group: 'org.spockframework', name: 'spock-core', version: v.spock) {
+        testCompile group: 'org.springframework', name: 'spring-test', version: '4.0.5.RELEASE'
+        testCompile(group: 'org.spockframework', name: 'spock-spring', version: v.spock) {
             exclude group: 'org.codehaus.groovy'
             exclude group: 'junit'
         }

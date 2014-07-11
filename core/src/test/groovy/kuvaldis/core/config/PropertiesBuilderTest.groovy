@@ -1,4 +1,4 @@
-package kuvaldis.server.config
+package kuvaldis.core.config
 
 import spock.lang.Specification
 

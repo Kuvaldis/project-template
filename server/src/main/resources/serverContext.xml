@@ -14,20 +14,6 @@
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
-    <bean id="propertiesHolder" factory-bean="propertiesBuilder" factory-method="build">
-        <constructor-arg value="config/server-config.groovy"/>
-        <constructor-arg value="config/server-profiles-config.groovy"/>
-        <constructor-arg value="config/server-dev-config.groovy"/>
-    </bean>
-
-    <bean id="props" class="kuvaldis.server.config.MultiConfigPropertiesFactoryBean" depends-on="propertiesHolder">
-        <constructor-arg name="propertiesHolder" ref="propertiesHolder"/>
-    </bean>
-
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" depends-on="props">
-        <property name="properties" ref="props"/>
-    </bean>
-
     <util:list id="filters" value-type="org.eclipse.jetty.servlet.FilterHolder">
         <bean id="springSecurityFilterChain" class="org.eclipse.jetty.servlet.FilterHolder">
             <property name="className" value="org.springframework.web.filter.DelegatingFilterProxy"/>

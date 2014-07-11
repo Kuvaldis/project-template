@@ -5,6 +5,7 @@ import kuvaldis.core.service.AppUserService
 import kuvaldis.model.data.domain.AppUser
 import org.springframework.stereotype.Component
 
+import javax.annotation.PostConstruct
 import javax.inject.Inject
 import javax.ws.rs.GET
 import javax.ws.rs.Path
@@ -18,9 +19,9 @@ import javax.ws.rs.core.MediaType
  */
 @Slf4j
 @Component
-@Path('test')
+@Path('user')
 @Produces(MediaType.APPLICATION_JSON)
-class TestResource {
+class UserResource {
 
     @Inject
     private AppUserService appUserService
