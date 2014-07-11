@@ -22,13 +22,20 @@ dependencies {
     compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version: v.jetty
     compile group: 'org.springframework', name: 'spring-web', version: v.spring
 
-    compile group: 'org.springframework.security', name: 'spring-security-core', version: v.springSecurity
+    compile(group: 'org.springframework.security', name: 'spring-security-core', version: v.springSecurity) {
+        exclude group: 'org.springframework'
+    }
     compile(group: 'org.springframework.security', name: 'spring-security-web', version: v.springSecurity) {
         exclude group: 'org.springframework'
     }
-    compile group: 'org.springframework.security', name: 'spring-security-config', version: v.springSecurity
+    compile(group: 'org.springframework.security', name: 'spring-security-config', version: v.springSecurity) {
+        exclude group: 'org.springframework'
+    }
 
-    runtime group: 'com.mattbertolini', name: 'liquibase-slf4j', version: v.liquibaseSlf4j
+    runtime(group: 'com.mattbertolini', name: 'liquibase-slf4j', version: v.liquibaseSlf4j) {
+        exclude group: 'org.slf4j'
+        exclude group: 'org.liquibase'
+    }
 }
 
 

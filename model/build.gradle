@@ -15,18 +15,31 @@ ext {
 
 dependencies {
     compile group: 'postgresql', name: 'postgresql', version: v.postgres
-    compile group: 'com.jolbox', name: 'bonecp', version: v.bonecp
+    compile(group: 'com.jolbox', name: 'bonecp', version: v.bonecp) {
+        exclude group: 'org.slf4j'
+    }
     compile(group: 'org.liquibase', name: 'liquibase-core', version: v.liquibase) {
         exclude group: 'org.eclipse.jetty'
         exclude group: 'junit'
     }
     compile(group: 'net.saliman', name: 'groovy-liquibase-dsl', version: v.groovyLiquibase) {
         exclude group: 'org.eclipse.jetty'
+        exclude group: 'org.codehaus.groovy'
     }
     compile group: 'org.springframework', name: 'spring-tx', version: v.spring
     compile group: 'org.springframework', name: 'spring-orm', version: v.spring
-    compile group: 'org.springframework.data', name: 'spring-data-jpa', version: v.springData
+    compile(group: 'org.springframework.data', name: 'spring-data-jpa', version: v.springData) {
+        exclude group: 'org.springframework', module: 'spring-orm'
+        exclude group: 'org.springframework', module: 'spring-context'
+        exclude group: 'org.springframework', module: 'spring-aop'
+        exclude group: 'org.springframework', module: 'spring-tx'
+        exclude group: 'org.springframework', module: 'spring-beans'
+        exclude group: 'org.springframework', module: 'spring-core'
+    }
     compile group: 'org.batoo.jpa', name: 'persistence-api', version: v.persistence
-    compile group: 'org.batoo.jpa', name: 'batoo-jpa', version: v.batoo
+    compile(group: 'org.batoo.jpa', name: 'batoo-jpa', version: v.batoo) {
+        exclude group: 'org.slf4j'
+        exclude group: 'com.google.guava'
+    }
     compile group: 'javax.validation', name: 'validation-api', version: v.validation
 }
