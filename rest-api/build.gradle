@@ -28,5 +28,7 @@ dependencies {
     }
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: v.jackson
 
-    testCompile group: 'org.glassfish.jersey.test-framework.providers', name: 'jersey-test-framework-provider-jetty', version: v.jersey
+    testCompile(group: 'org.glassfish.jersey.test-framework.providers', name: 'jersey-test-framework-provider-jetty', version: v.jersey) {
+        exclude group: 'org.ow2.asm'
+    }
 }
