@@ -1,7 +1,10 @@
 package kuvaldis.model.data.domain
 
+import groovy.transform.AutoClone
+import groovy.transform.AutoCloneStyle
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import groovy.transform.TupleConstructor
 
 import javax.persistence.*
 
@@ -14,6 +17,8 @@ import javax.persistence.*
 @SequenceGenerator(name = 'app_user_seq', sequenceName = 'app_user_seq')
 @EqualsAndHashCode
 @ToString(includeNames = true)
+@AutoClone(style = AutoCloneStyle.COPY_CONSTRUCTOR)
+@TupleConstructor
 class AppUser {
     @Id
     @GeneratedValue(generator = 'app_user_seq', strategy = GenerationType.SEQUENCE)

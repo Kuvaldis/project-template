@@ -6,4 +6,7 @@ ext {
 
 dependencies {
     compile project(':model')
+    compile(group: 'org.springframework.security', name: 'spring-security-core', version: v.springSecurity) {
+        exclude group: 'org.springframework'
+    }
 }
