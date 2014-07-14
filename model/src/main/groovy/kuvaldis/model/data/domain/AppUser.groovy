@@ -35,4 +35,13 @@ class AppUser {
     enum Role {
         USER, ADMIN
     }
+
+    Map<String, ?> toMap() {
+        [
+                id: id,
+                username: username,
+                password: password,
+                roles: roles*.name()
+        ]
+    }
 }

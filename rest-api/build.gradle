@@ -17,6 +17,7 @@ ext {
 
 dependencies {
     compile project(':core')
+    compile project(':shared')
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: v.servletApi
 
     compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: v.jersey

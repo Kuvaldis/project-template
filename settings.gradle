@@ -1,3 +1,4 @@
 rootProject.name = 'project-template'
 
-include 'server', 'web', 'model', 'rest-api', 'core'
+include 'server', 'web', 'model', 'rest-api', 'core', 'shared'
+

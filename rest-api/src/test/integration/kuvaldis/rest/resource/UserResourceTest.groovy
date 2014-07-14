@@ -1,51 +1,43 @@
 package kuvaldis.rest.resource
 
 import kuvaldis.model.data.domain.AppUser
-import kuvaldis.rest.RestConfig
+import kuvaldis.shared.dto.AppUserDto
 import org.glassfish.jersey.client.ClientConfig
-import org.glassfish.jersey.server.ResourceConfig
-import org.glassfish.jersey.test.DeploymentContext
-import org.glassfish.jersey.test.jetty.JettyTestContainerFactory
-import org.glassfish.jersey.test.spi.TestContainer
-import org.springframework.context.support.ClassPathXmlApplicationContext
-import spock.lang.Shared
+import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.transaction.TransactionConfiguration
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
+import javax.annotation.Resource
 import javax.ws.rs.client.ClientBuilder
 
 /**
  * User: NFadin
- * Date: 11.07.2014
- * Time: 16:07
+ * Date: 14.07.2014
+ * Time: 14:36
  */
+@ContextConfiguration(locations = ['classpath*:coreContext.xml', 'classpath*:restContext.xml'])
+@Transactional
+@TransactionConfiguration(defaultRollback = true)
 class UserResourceTest extends Specification {
 
-    @Shared
-    protected TestContainer container
+    @Resource
+    UserResource userResource
 
-    def setupSpec() {
-        final ResourceConfig rc = new RestConfig('kuvaldis.rest')
-                .property('contextConfig', new ClassPathXmlApplicationContext(
-                'classpath*:coreContext.xml',
-                'classpath*:restContext.xml'))
-        container = new JettyTestContainerFactory()
-                .create(URI.create('http://localhost:9090'),
-                DeploymentContext.builder(rc).contextPath('/').build())
-        container.start()
-    }
-
-    def cleanupSpec() {
-        container?.stop()
-    }
-
-    def "try something"() {
+    def "find the same user after create"() {
         given:
-        def config = new ClientConfig()
-        def client = ClientBuilder.newClient(config)
-        def target = client.target(container.baseUri)
+        def u = new AppUserDto(
+                username: 'user',
+                password: 'user',
+                roles: ['USER']
+        )
         when:
-        def response = target.path('/user').request().get(AppUser)
+        def cbu = userResource.create(u)
+        def fu = userResource.get(cbu.id)
         then:
-        response?.username == 'admin'
+        fu.username == cbu.username
+        fu.id == cbu.id
     }
 }

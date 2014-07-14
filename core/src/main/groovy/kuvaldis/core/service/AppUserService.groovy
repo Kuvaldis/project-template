@@ -23,6 +23,10 @@ class AppUserService {
     @Autowired
     PasswordEncoder appUserPasswordEncoder
 
+    AppUser create(final Map user) {
+        create(new AppUser(user))
+    }
+
     AppUser create(final AppUser appUser) {
         final AppUser userToSave = new AppUser(appUser)
         userToSave.password = appUserPasswordEncoder.encode(userToSave.password)
@@ -31,5 +35,9 @@ class AppUserService {
 
     AppUser find(String username) {
         appUserRepository.findByUsername(username)
+    }
+
+    AppUser find(Long id) {
+        appUserRepository.getOne(id)
     }
 }

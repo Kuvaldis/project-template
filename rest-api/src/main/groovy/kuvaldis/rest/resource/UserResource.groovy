@@ -3,11 +3,14 @@ package kuvaldis.rest.resource
 import groovy.util.logging.Slf4j
 import kuvaldis.core.service.AppUserService
 import kuvaldis.model.data.domain.AppUser
+import kuvaldis.shared.dto.AppUserDto
 import org.springframework.stereotype.Component
 
 import javax.inject.Inject
 import javax.ws.rs.GET
+import javax.ws.rs.POST
 import javax.ws.rs.Path
+import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
 import javax.ws.rs.core.MediaType
 
@@ -26,7 +29,29 @@ class UserResource {
     private AppUserService appUserService
 
     @GET
-    AppUser get() {
+    AppUserDto get() {
         appUserService.find('admin')
+    }
+
+    @GET
+    @Path('{id}')
+    AppUserDto get(@PathParam('id') Long id) {
+        appUserService.find(id).toMap()
+    }
+
+    @POST
+    AppUserDto create(final AppUserDto user) {
+        hidePassword(appUserService.create([
+                username: user.username,
+                password: user.password,
+                roles: user.roles.collect {
+                    AppUser.Role.valueOf(it)
+                }
+        ])).toMap()
+    }
+
+    static def hidePassword(AppUser user) {
+        user.password = '[PASSWORD]'
+        user
     }
 }
