@@ -7,6 +7,7 @@ import kuvaldis.shared.dto.AppUserDto
 import org.springframework.stereotype.Component
 
 import javax.inject.Inject
+import javax.validation.Valid
 import javax.ws.rs.GET
 import javax.ws.rs.POST
 import javax.ws.rs.Path
@@ -25,12 +26,16 @@ import javax.ws.rs.core.MediaType
 @Produces(MediaType.APPLICATION_JSON)
 class UserResource {
 
+    UserResource() {
+        log.info('123')
+    }
+
     @Inject
     private AppUserService appUserService
 
     @GET
     AppUserDto get() {
-        appUserService.find('admin')
+        appUserService.find('admin').toMap()
     }
 
     @GET
@@ -40,7 +45,7 @@ class UserResource {
     }
 
     @POST
-    AppUserDto create(final AppUserDto user) {
+    AppUserDto create(@Valid final AppUserDto user) {
         hidePassword(appUserService.create([
                 username: user.username,
                 password: user.password,
