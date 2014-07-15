@@ -15,7 +15,7 @@ import javax.ws.rs.core.Application
  * Date: 14.07.2014
  * Time: 17:04
  */
-class JerseySpockTest extends Specification {
+class JerseySpecification extends Specification {
 
     @Shared private JerseyTest jerseyTest
 

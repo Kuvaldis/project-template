@@ -2,7 +2,7 @@ package kuvaldis.rest.resource
 
 import kuvaldis.core.service.AppUserService
 import kuvaldis.model.data.domain.AppUser
-import kuvaldis.rest.JerseySpockTest
+import kuvaldis.rest.JerseySpecification
 import kuvaldis.shared.dto.AppUserDto
 
 import javax.ws.rs.BadRequestException
@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType
  * Date: 11.07.2014
  * Time: 16:07
  */
-class JerseyTestUserResourceTest extends JerseySpockTest {
+class UserRestTest extends JerseySpecification {
 
     @Override
     protected Closure bindObjects() {

@@ -1,17 +1,12 @@
 package kuvaldis.rest.resource
 
-import kuvaldis.model.data.domain.AppUser
 import kuvaldis.shared.dto.AppUserDto
-import org.glassfish.jersey.client.ClientConfig
-import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.transaction.TransactionConfiguration
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
 import javax.annotation.Resource
-import javax.ws.rs.client.ClientBuilder
 
 /**
  * User: NFadin
