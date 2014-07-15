@@ -7,7 +7,7 @@ var gulp = require("gulp"),
     concat = require("gulp-concat"),
     minifyCss = require("gulp-minify-css"),
     html2js = require("gulp-ng-html2js"),
-    htmlInject = require("gulp-inject"),
+    inject = require("gulp-inject"),
     ngmin = require("gulp-ngmin"),
     uglify = require("gulp-uglify"),
     connect = require("connect"),
@@ -16,7 +16,10 @@ var gulp = require("gulp"),
     tinylr = require("tiny-lr"),
     fs = require("fs"),
     path = require("path"),
+    jsonfile = require("jsonfile"),
     karma = require("gulp-karma");
+
+// todo add gulp-insert
 
 var paths = {
     src: {
@@ -33,6 +36,10 @@ var paths = {
         },
         index: {
             file: 'src/main/index.html'
+        },
+        config: {
+            file: '../config/web-config/web-config.json',
+            template: 'src/main/config.js'
         }
     },
     test: {
@@ -53,6 +60,9 @@ var paths = {
         templates: {
             file: 'templates.js',
             dest: 'app'
+        },
+        config: {
+            file: 'app/config.js'
         },
         index: {
             dest: 'app',
@@ -108,6 +118,20 @@ gulp.task("clean:dist", function () {
 });
 
 gulp.task("clean", ["clean:dist", "clean:build"]);
+
+var toConfigConstant = function(constant) {
+    util.log(constant);
+    return constant
+};
+
+gulp.task("build:config", function() {
+    return src(paths.src.config.template)
+        .pipe(inject(jsonfile.readFileSync(paths.src.config.file), {
+            starttag: '/* inject:constants */',
+            transform: toConfigConstant
+        }))
+        .pipe(dest(paths.build.config.file))
+});
 
 gulp.task("build:css", function () {
     return src(paths.src.less.files)
@@ -168,23 +192,23 @@ gulp.task("build:vendor", function () {
         .pipe(dest(paths.build.vendor.dest))
 });
 
-gulp.task("build:app", ["build:css", "build:js", "build:templates"]);
+gulp.task("build:app", ["build:css", "build:js", "build:templates", "build:config"]);
 
 var buildIndex = function() {
     return src(paths.src.index.file)
-        .pipe(htmlInject(src(paths.vendor.css, {read: false}), {
+        .pipe(inject(src(paths.vendor.css, {read: false}), {
             starttag: '<!-- inject:vendor:css -->',
             transform: toPathBuildCssVendor
         }))
-        .pipe(htmlInject(src(paths.build.css.files, {read: false}), {
+        .pipe(inject(src(paths.build.css.files, {read: false}), {
             starttag: '<!-- inject:app:css -->',
             transform: toPathBuildCssApp
         }))
-        .pipe(htmlInject(src(paths.vendor.js, {read: false}), {
+        .pipe(inject(src(paths.vendor.js, {read: false}), {
             starttag: '<!-- inject:vendor:js -->',
             transform: toPathBuildJsVendor
         }))
-        .pipe(htmlInject(src(paths.build.js.files, {read: false}), {
+        .pipe(inject(src(paths.build.js.files, {read: false}), {
             starttag: '<!-- inject:app:js -->',
             transform: toPathBuildJsApp
         }))
@@ -232,11 +256,11 @@ var toPathDistJs = function (path) {
 
 gulp.task("dist:index", ["build:index", "dist:css", "dist:js"], function () {
     return src(paths.src.index.file)
-        .pipe(htmlInject(src(paths.dist.js.files, {read: false}), {
+        .pipe(inject(src(paths.dist.js.files, {read: false}), {
             starttag: '<!-- inject:app:css -->',
             transform: toPathDistCss
         }))
-        .pipe(htmlInject(src(paths.dist.css.files, {read: false}), {
+        .pipe(inject(src(paths.dist.css.files, {read: false}), {
             starttag: '<!-- inject:app:js -->',
             transform: toPathDistJs
         }))

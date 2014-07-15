@@ -1,7 +1,14 @@
 <!DOCTYPE html>
-<html ng-controller="AppController">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7" ng-controller="app"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8" ng-controller="app"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9" ng-controller="app"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" ng-controller="AppController"> <!--<![endif]-->
 <head>
-    <title>It's angular, baby!</title>
+    <title>{{_page.title}}</title>
     <!-- inject:vendor:css -->
     <!-- endinject -->
     <!-- inject:app:css -->
@@ -12,16 +19,67 @@
     <!-- endinject -->
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <a href="/home">Home121</a>
-            <a href="/contacts">Contacts</a>
+<div id="main-menu" class="container" ng-show="_app.initialized" hidden="hidden">
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li ng-class="{active: _page.isActive('/home')}">
+                            <a class="menu-item" href="/home">
+                                {{_messages['menu.title.home']}}
+                            </a>
+                        </li>
+                        <li ng-class="{active: _page.isActive('/user')}" ng-show="_security.hasRole('USER')">
+                            <a class="menu-item" href="/user">
+                                {{_messages['menu.title.user']}}
+                            </a>
+                        </li>
+                        <li ng-class="{active: _page.isActive('/security')}" ng-show="_security.hasRole('ADMIN')">
+                            <a class="menu-item" href="/security">
+                                {{_messages['menu.title.security']}}
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="" class="dropdown-toggle menu-item" data-toggle="dropdown">
+                                {{_messages['menu.title.login']}}
+                                <strong class="caret"></strong>
+                            </a>
+
+                            <div class="dropdown-menu login-dropdown">
+                                <form method="POST" role="form" class="login-form">
+                                    <input type="text"
+                                           class="form-control"
+                                           ng-model="login.username"
+                                           placeholder="{{_messages['login.label.login']}}"/>
+                                    <input type="password"
+                                           class="form-control"
+                                           ng-model="login.password"
+                                           placeholder="{{_messages['login.label.password']}}"/>
+                                    <button type="submit" name="submit" class="btn btn-lg btn-primary btn-block" ng-click="login.submit()">
+                                        {{_messages['login.button.login']}}
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
+</div>
+
+
+<div class="container main-container" ng-show="_app.initialized">
     <div class="row">
         <div class="col-md-12">
-            <div ui-view></div>
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div class="col-md-12" ui-view></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
