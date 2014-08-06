@@ -16,7 +16,6 @@ var gulp = require("gulp"),
     tinylr = require("tiny-lr"),
     fs = require("fs"),
     path = require("path"),
-    jsonfile = require("jsonfile"),
     karma = require("gulp-karma");
 
 // todo add gulp-insert
@@ -62,7 +61,7 @@ var paths = {
             dest: 'app'
         },
         config: {
-            file: 'app/config.js'
+            dest: 'app'
         },
         index: {
             dest: 'app',
@@ -119,18 +118,43 @@ gulp.task("clean:dist", function () {
 
 gulp.task("clean", ["clean:dist", "clean:build"]);
 
-var toConfigConstant = function(constant) {
-    util.log(constant);
-    return constant
+var createProperties = function(o, parentName) {
+    var result = {};
+    var createName = function(parentName, property) {
+        return parentName + (parentName ? '.' : '') + property
+    };
+    for (var p in o) {
+        if (typeof o[p] === 'object') {
+            var deepProps = createProperties(o[p], createName(parentName, p));
+            for (var dp in deepProps) {
+                result[dp] = deepProps[dp]
+            }
+        } else {
+            result[createName(parentName, p)] = o[p];
+        }
+    }
+    return result
+};
+
+var toConfigConstant = function(filePath, file) {
+    var conf = JSON.parse(file.contents.toString('utf8'));
+    var properties = createProperties(conf, '');
+    var result = '';
+    for (var p in properties) {
+        result += '.constant("' + p + '", "' + properties[p] + '")'
+    }
+    result += ';';
+    return result;
 };
 
 gulp.task("build:config", function() {
     return src(paths.src.config.template)
-        .pipe(inject(jsonfile.readFileSync(paths.src.config.file), {
+        .pipe(inject(src(paths.src.config.file), {
             starttag: '/* inject:constants */',
+            endtag: '/* inject:constants:end */',
             transform: toConfigConstant
         }))
-        .pipe(dest(paths.build.config.file))
+        .pipe(dest(paths.build.config.dest))
 });
 
 gulp.task("build:css", function () {
