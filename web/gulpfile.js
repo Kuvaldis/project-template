@@ -36,7 +36,7 @@ var paths = {
             file: 'src/main/index.html'
         },
         config: {
-            file: '../config/web-config/web-config.json',
+            files: ['../config/web-config/web-config.json', '../config/web-config/web-dev-config.json'],
             template: 'src/main/config.js'
         }
     },
@@ -136,7 +136,7 @@ var createProperties = function(o, parentName) {
 };
 
 var toConfigConstant = function(filePath, file) {
-    var conf = JSON.parse(file.contents.toString('utf8'));
+    var conf = JSON.parse('[' + file.contents.toString('utf8') + ']'); // todo collect properties
     var properties = createProperties(conf, '');
     var result = '';
     for (var p in properties) {
@@ -149,7 +149,10 @@ var toConfigConstant = function(filePath, file) {
 
 gulp.task("build:config", function() {
     return src(paths.src.config.template)
-        .pipe(inject(src(paths.src.config.file), {
+        .pipe(inject(src(paths.src.config.files)
+            .pipe(concat('somefile.js', {
+                newLine: ','
+            })), {
             starttag: '/* inject:constants */',
             endtag: '/* inject:constants:end */',
             transform: toConfigConstant
