@@ -17,12 +17,16 @@ ext {
 apply plugin: 'node'
 apply plugin: 'gulp'
 
-
 node {
     version = '0.10.29'
     distBaseUrl = 'http://nodejs.org/dist'
     download = true
     workDir = file(nodeDir)
+}
+
+def env = ''
+if (project.hasProperty('webEnv')) {
+    env = project.webEnv
 }
 
 task cleanNode(type: Delete) {
@@ -58,23 +62,19 @@ task bower(dependsOn: 'npmInstall', type: Exec) {
 
 }
 
-task dev << {
-    println 'Run in dev mode'
+task dev(type: GulpTask) {
+    args = ['dev', '-e', "$env"]
 }
 dev.dependsOn 'bower'
-dev.dependsOn 'gulp_dev'
 dev.dependsOn 'npmInstall'
 dev.dependsOn 'installGulp'
-gulp_dev.mustRunAfter 'installGulp'
 
-task test << {
-    println 'Run tests'
+task test(type: GulpTask) {
+    args = ['test', '-e', "$env"]
 }
 test.dependsOn 'bower'
-test.dependsOn 'gulp_test'
 test.dependsOn 'npmInstall'
 test.dependsOn 'installGulp'
-gulp_test.mustRunAfter 'installGulp'
 
 task zip(type: Zip) {
     baseName 'web'
@@ -86,7 +86,10 @@ task zip(type: Zip) {
 }
 
 task build << {}
+task dist(type: GulpTask) {
+    args = ['dist', '-e', "$env"]
+}
 build.dependsOn 'bower'
-build.dependsOn 'gulp_dist'
+build.dependsOn 'dist'
 build.dependsOn 'zip'
-gulp_dist.mustRunAfter 'bower'
+dist.mustRunAfter 'bower'

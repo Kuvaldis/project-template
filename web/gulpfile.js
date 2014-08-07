@@ -16,9 +16,8 @@ var gulp = require("gulp"),
     tinylr = require("tiny-lr"),
     fs = require("fs"),
     path = require("path"),
-    karma = require("gulp-karma");
-
-// todo add gulp-insert
+    karma = require("gulp-karma"),
+    argv = require('yargs').argv;
 
 var paths = {
     src: {
@@ -144,6 +143,7 @@ var toConfigConstant = function(filePath, file) {
         result += '.constant("' + p + '", "' + properties[p] + '")'
     }
     result += ';';
+    util.log(argv);
     return result;
 };
 
