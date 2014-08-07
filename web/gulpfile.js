@@ -54,7 +54,7 @@ var paths = {
         },
         js: {
             dest: 'app/src',
-            files: ['app/src/**/*.js', 'app/templates.js']
+            files: ['app/src/**/*.js', 'app/templates.js', 'app/config.js']
         },
         templates: {
             file: 'templates.js',
@@ -258,7 +258,7 @@ gulp.task("dist:css", ["build:css"], function () {
         .pipe(dest(paths.dist.css.dest))
 });
 
-gulp.task("dist:js", ["build:js", "build:templates"], function () {
+gulp.task("dist:js", ["build:js", "build:templates", "build:config"], function () {
     return src([].concat(paths.vendor.js).concat(paths.build.js.files))
         .pipe(concat(paths.dist.js.file))
         .pipe(ngmin())
