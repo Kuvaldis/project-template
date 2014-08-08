@@ -36,7 +36,11 @@ var paths = {
             file: 'src/main/index.html'
         },
         config: {
-            files: ['../config/web-config/web-config.json', '../config/web-config/web-dev-config.json'],
+            files: [
+                '../config/web-config/web-config.json',
+                '../config/web-config/web-dev-config.json',
+                '../config/web-config/web-profiles-config.json'
+            ],
             template: 'src/main/config.js'
         }
     },
@@ -136,8 +140,32 @@ var createProperties = function(o, parentName) {
 };
 
 var toConfigConstant = function(filePath, file) {
-    var conf = JSON.parse('[' + file.contents.toString('utf8') + ']'); // todo collect properties
-    var properties = createProperties(conf, '');
+    var confs = JSON.parse('[' + file.contents.toString('utf8') + ']'); // todo collect properties
+    if (confs.length === 3) {
+        confs = confs.slice(0, 2)
+    }
+    var properties;
+    for (var i in confs) {
+        var conf;
+        if (confs[i].environments) {
+            if (argv.e) {
+                conf = confs[i].environments[argv.e]
+            }
+        } else {
+            conf = confs[i]
+        }
+        if (conf) {
+            var props = createProperties(conf, '');
+            if (!properties) {
+                properties = props
+            } else {
+                for (var p in props) {
+                    properties[p] = props[p]
+                }
+            }
+        }
+
+    }
     var result = '';
     for (var p in properties) {
         result += '.constant("' + p + '", "' + properties[p] + '")'
